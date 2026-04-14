@@ -93,28 +93,111 @@
     main {
       flex: 1;
       display: flex;
-      flex-direction: column;
-      align-items: center;
+      align-items: stretch;
+      padding: 40px 24px 48px;
       gap: 0;
-      padding: 0 0 48px;
-    }
-
-    /* ── GAME SECTION ── */
-    .game-section {
+      max-width: 1100px;
+      margin: 0 auto;
       width: 100%;
-      max-width: calc(var(--game-max) + 48px);
-      padding: 0 16px;
     }
 
-    @media (max-width: 640px) {
-      .game-section {
-        padding: 0; /* full-bleed on narrow viewports */
+    /* ── SPLIT LAYOUT ── */
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      width: 100%;
+      align-items: start;
+    }
+
+    @media (max-width: 700px) {
+      .split {
+        grid-template-columns: 1fr;
       }
-      .game-section .section-label,
-      .game-section .game-controls {
-        padding-left: 14px;
-        padding-right: 14px;
-      }
+    }
+
+    /* ── GAME THUMBNAIL ── */
+    .game-thumb-link {
+      display: block;
+      position: relative;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      background: #000;
+      text-decoration: none;
+    }
+
+    .game-thumb-link img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      transition: transform 0.3s ease, filter 0.3s ease;
+    }
+
+    .game-thumb-link:hover img {
+      transform: scale(1.03);
+      filter: brightness(0.6);
+    }
+
+    /* play icon that appears on hover */
+    .thumb-hover {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      pointer-events: none;
+    }
+
+    .game-thumb-link:hover .thumb-hover {
+      opacity: 1;
+    }
+
+    .thumb-play-btn {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .thumb-play-btn svg {
+      width: 28px;
+      height: 28px;
+      fill: var(--accent);
+      margin-left: 4px;
+    }
+
+    .thumb-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: none;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+
+    .thumb-label a {
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      font-size: 10px;
+      text-transform: uppercase;
+    }
+
+    .thumb-label a:hover { text-decoration: underline; }
+
+    /* ── ABOUT SECTION (right col) ── */
+    .about-section {
+      width: 100%;
     }
 
     .section-label {
@@ -135,146 +218,20 @@
       background: var(--border);
     }
 
-    .embed-frame {
-      border: 1px solid var(--border);
-      background: #000;
-      position: relative;
-      overflow: hidden;
-      max-width: 100%;
-    }
-
-    .embed-inner {
-      position: relative;
-      width: 100%;
-      padding-top: 100%;
-      overflow: hidden; /* clips PICO-8's internal margin: auto canvas bleed */
-    }
-
-    .embed-inner iframe {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-
-    /* ── MOBILE PLAY OVERLAY ── */
-    .play-overlay {
-      display: none; /* desktop: hidden */
-      position: absolute;
-      inset: 0;
-      z-index: 10;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0,0,0,0.72);
-      backdrop-filter: blur(2px);
-      cursor: pointer;
-      transition: opacity 0.2s ease;
-    }
-
-    .play-overlay.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .play-btn {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
-      border: 2px solid var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.15s ease, background 0.15s ease;
-    }
-
-    .play-overlay:active .play-btn {
-      transform: scale(0.92);
-      background: rgba(232,255,60,0.15);
-    }
-
-    .play-btn svg {
-      width: 28px;
-      height: 28px;
-      fill: var(--accent);
-      margin-left: 4px; /* optical centre for triangle */
-    }
-
-    /* only show overlay on touch/mobile */
-    @media (hover: none) and (pointer: coarse) {
-      .play-overlay { display: flex; }
-    }
-
-
-    .embed-frame::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 3px,
-        rgba(0,0,0,0.06) 3px,
-        rgba(0,0,0,0.06) 4px
-      );
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    .game-controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 14px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-top: none;
-      font-size: 11px;
-      color: var(--muted);
-      letter-spacing: 0.08em;
-    }
-
-    .dot {
-      display: inline-block;
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: var(--accent);
-      margin-right: 6px;
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0.3; }
-    }
-
-    /* ── ABOUT SECTION ── */
-    .about-section {
-      width: 100%;
-      max-width: calc(var(--game-max) + 48px);
-      margin-top: 40px;
-      padding: 0 16px;
-    }
-
     .about-card {
       border: 1px solid var(--border);
       padding: 28px 32px;
       background: var(--surface);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-    }
-
-    @media (max-width: 540px) {
-      .about-card { grid-template-columns: 1fr; }
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
 
     .about-card h2 {
       font-family: 'Bebas Neue', sans-serif;
       font-size: 32px;
       letter-spacing: 0.05em;
-      margin: 0 0 10px;
-      grid-column: 1 / -1;
+      margin: 0;
       color: var(--text);
     }
 
@@ -310,6 +267,20 @@
       font-weight: 500;
     }
 
+    .dot {
+      display: inline-block;
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin-right: 6px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
     /* ── FOOTER ── */
     footer {
       background: var(--surface);
@@ -336,82 +307,51 @@
   </div>
 
   <main>
+    <div class="split">
 
-    <!-- GAME SECTION -->
-    <section class="game-section">
-      <div class="section-label">Play Now</div>
-      <div class="embed-frame">
-        <div class="embed-inner">
-          <div class="play-overlay" id="playOverlay">
-            <div class="play-btn">
+      <!-- LEFT: game thumbnail linking to brgame.html -->
+      <div>
+        <div class="section-label">Play Now</div>
+        <a class="game-thumb-link" href="https://samuelbennett17-ux.github.io/hyperfighting/brgame.html" target="_blank" rel="noopener">
+          <img src="game-screenshot.png" alt="Hyperfighting screenshot">
+          <div class="thumb-hover">
+            <div class="thumb-play-btn">
               <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <polygon points="6,3 20,12 6,21"/>
               </svg>
             </div>
           </div>
-          <iframe
-            id="gameFrame"
-            src="https://samuelbennett17-ux.github.io/hyperfighting/brgame.html"
-            scrolling="no"
-            allowfullscreen>
-          </iframe>
+        </a>
+        <div class="thumb-label">
+          <div><span class="dot"></span>Live</div>
+          <a href="https://samuelbennett17-ux.github.io/hyperfighting/brgame.html" target="_blank" rel="noopener">Play →</a>
         </div>
       </div>
-      <div class="game-controls">
-        <div><span class="dot"></span>Live</div>
-        <div>Arrow keys / WASD · Z to shoot</div>
-      </div>
-    </section>
 
-    <!-- ABOUT SECTION -->
-    <section class="about-section">
-      <div class="section-label">About</div>
-      <div class="about-card">
-        <h2>About the Game</h2>
-        <p>
-          A fast-paced PICO-8 brawler. Fight waves of enemies, dodge attacks,
-          and push your score as high as it'll go. No checkpoints. No mercy.
-        </p>
-        <ul class="stat-list">
-          <li>Engine <span>PICO-8</span></li>
-          <li>Genre <span>Arcade Fighter</span></li>
-          <li>Players <span>1P</span></li>
-          <li>Platform <span>Browser</span></li>
-        </ul>
-      </div>
-    </section>
+      <!-- RIGHT: about -->
+      <section class="about-section">
+        <div class="section-label">About</div>
+        <div class="about-card">
+          <h2>About the Game</h2>
+          <p>
+            A fast-paced PICO-8 brawler. Fight waves of enemies, dodge attacks,
+            and push your score as high as it'll go. No checkpoints. No mercy.
+          </p>
+          <ul class="stat-list">
+            <li>Engine <span>PICO-8</span></li>
+            <li>Genre <span>Arcade Fighter</span></li>
+            <li>Players <span>1P</span></li>
+            <li>Platform <span>Browser</span></li>
+          </ul>
+        </div>
+      </section>
 
+    </div>
   </main>
 
   <footer>
     © 2026 Your Name — Built with PICO-8
   </footer>
 
-  <script>
-    const overlay = document.getElementById('playOverlay');
-    const frame   = document.getElementById('gameFrame');
-
-    overlay.addEventListener('click', () => {
-      // Request fullscreen on the iframe (vendor-prefixed for Safari/older Chrome)
-      const el = frame;
-      if      (el.requestFullscreen)       el.requestFullscreen();
-      else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
-
-      // Fade out overlay after a short delay so the game has time to load
-      overlay.classList.add('hidden');
-    });
-
-    // If user exits fullscreen manually, show overlay again
-    document.addEventListener('fullscreenchange', () => {
-      if (!document.fullscreenElement) {
-        overlay.classList.remove('hidden');
-      }
-    });
-    document.addEventListener('webkitfullscreenchange', () => {
-      if (!document.webkitFullscreenElement) {
-        overlay.classList.remove('hidden');
-      }
-    });
-  </script>
 </body>
 </html>
