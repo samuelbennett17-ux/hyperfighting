@@ -4,97 +4,328 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Game Landing Page</title>
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg:        #0a0a0a;
+      --surface:   #111;
+      --border:    #2a2a2a;
+      --accent:    #e8ff3c;
+      --text:      #f0f0e8;
+      --muted:     #666;
+      --game-max:  720px; /* ← key: caps the iframe so padding-top: 100% stays reasonable */
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0; padding: 0;
+      overflow-x: hidden;
+    }
+
     body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #111;
-      color: #fff;
+      font-family: 'DM Mono', monospace;
+      background: var(--bg);
+      color: var(--text);
       display: flex;
       flex-direction: column;
-      min-height: 100vh;
+      min-height: 100dvh;
     }
 
+    /* ── HEADER ── */
     header {
-      background: #222;
-      padding: 20px;
-      text-align: center;
-      font-size: 24px;
-      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 36px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
 
+    .header-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+    }
+
+    .header-tag {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      border-radius: 2px;
+    }
+
+    /* ── HERO STRIP ── */
+    .hero {
+      padding: 48px 24px 28px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(52px, 10vw, 100px);
+      letter-spacing: 0.04em;
+      margin: 0 0 12px;
+      line-height: 1;
+      color: var(--text);
+    }
+
+    .hero h1 span { color: var(--accent); }
+
+    .hero p {
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    /* ── MAIN ── */
     main {
       flex: 1;
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      padding: 20px;
-      gap: 20px;
+      gap: 0;
+      padding: 0 0 48px;
     }
 
-    .box {
-      background: #1a1a1a;
-      padding: 20px;
-      border-radius: 8px;
-      width: 300px;
-      max-width: 90%;
-      text-align: center;
+    /* ── GAME SECTION ── */
+    .game-section {
+      width: 100%;
+      max-width: calc(var(--game-max) + 48px);
+      padding: 0 16px;
     }
 
-    footer {
-      background: #222;
-      text-align: center;
-      padding: 15px;
-      font-size: 14px;
+    @media (max-width: 640px) {
+      .game-section {
+        padding: 0; /* full-bleed on narrow viewports */
+      }
+      .game-section .section-label,
+      .game-section .game-controls {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
     }
 
-    a.button {
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .embed-frame {
+      border: 1px solid var(--border);
+      background: #000;
+      position: relative;
+      overflow: hidden;
+      max-width: 100%;
+    }
+
+    .embed-inner {
+      position: relative;
+      width: 100%;
+      padding-top: 100%;
+      overflow: hidden; /* clips PICO-8's internal margin: auto canvas bleed */
+    }
+
+    .embed-inner iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* scanline overlay for aesthetics */
+    .embed-frame::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(0,0,0,0.06) 3px,
+        rgba(0,0,0,0.06) 4px
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .game-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: none;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+
+    .dot {
       display: inline-block;
-      margin-top: 10px;
-      padding: 10px 16px;
-      background: #444;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 6px;
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin-right: 6px;
+      animation: pulse 2s ease-in-out infinite;
     }
 
-    a.button:hover {
-      background: #666;
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
+    /* ── ABOUT SECTION ── */
+    .about-section {
+      width: 100%;
+      max-width: calc(var(--game-max) + 48px);
+      margin-top: 40px;
+      padding: 0 16px;
+    }
+
+    .about-card {
+      border: 1px solid var(--border);
+      padding: 28px 32px;
+      background: var(--surface);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 540px) {
+      .about-card { grid-template-columns: 1fr; }
+    }
+
+    .about-card h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px;
+      letter-spacing: 0.05em;
+      margin: 0 0 10px;
+      grid-column: 1 / -1;
+      color: var(--text);
+    }
+
+    .about-card p {
+      font-size: 13px;
+      line-height: 1.75;
+      color: #aaa;
+      margin: 0;
+    }
+
+    .stat-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .stat-list li {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+      color: var(--muted);
+    }
+
+    .stat-list li span {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 18px;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
     }
   </style>
 </head>
-
 <body>
 
   <header>
-    🎮 My Game
+    <div class="header-logo">🎮 My Game</div>
+    <div class="header-tag">PICO-8 Edition</div>
   </header>
 
-  <main>
-    <div class="box">
-      <h2>Play the Game</h2>
-      <p>Jump into the action!</p>
-      <div style="max-width:512px; margin:0 auto;">
-  <div style="position:relative; width:100%; padding-top:100%;">
-    <iframe 
-      src="https://samuelbennett17-ux.github.io/hyperfighting/brgame.html"
-      allowfullscreen
-      style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;">
-    </iframe>
+  <div class="hero">
+    <h1>HYPER<span>FIGHTING</span></h1>
+    <p>Fast-paced · Arcade · Survival</p>
   </div>
-</div>
-        ▶ Play Now
-      </a>
-    </div>
 
-    <div class="box">
-      <h2>About</h2>
-      <p>
-        This is a fast-paced PICO-8 game. Fight, survive, and beat your high score!
-      </p>
-    </div>
+  <main>
+
+    <!-- GAME SECTION -->
+    <section class="game-section">
+      <div class="section-label">Play Now</div>
+      <div class="embed-frame">
+        <div class="embed-inner">
+          <iframe
+            src="https://samuelbennett17-ux.github.io/hyperfighting/brgame.html"
+            scrolling="no"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+      <div class="game-controls">
+        <div><span class="dot"></span>Live</div>
+        <div>Arrow keys / WASD · Z to shoot</div>
+      </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section class="about-section">
+      <div class="section-label">About</div>
+      <div class="about-card">
+        <h2>About the Game</h2>
+        <p>
+          A fast-paced PICO-8 brawler. Fight waves of enemies, dodge attacks,
+          and push your score as high as it'll go. No checkpoints. No mercy.
+        </p>
+        <ul class="stat-list">
+          <li>Engine <span>PICO-8</span></li>
+          <li>Genre <span>Arcade Fighter</span></li>
+          <li>Players <span>1P</span></li>
+          <li>Platform <span>Browser</span></li>
+        </ul>
+      </div>
+    </section>
+
   </main>
 
   <footer>
