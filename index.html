@@ -158,7 +158,54 @@
       border: none;
     }
 
-    /* scanline overlay for aesthetics */
+    /* ── MOBILE PLAY OVERLAY ── */
+    .play-overlay {
+      display: none; /* desktop: hidden */
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.72);
+      backdrop-filter: blur(2px);
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+
+    .play-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .play-btn {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+
+    .play-overlay:active .play-btn {
+      transform: scale(0.92);
+      background: rgba(232,255,60,0.15);
+    }
+
+    .play-btn svg {
+      width: 28px;
+      height: 28px;
+      fill: var(--accent);
+      margin-left: 4px; /* optical centre for triangle */
+    }
+
+    /* only show overlay on touch/mobile */
+    @media (hover: none) and (pointer: coarse) {
+      .play-overlay { display: flex; }
+    }
+
+
     .embed-frame::after {
       content: '';
       position: absolute;
@@ -295,7 +342,15 @@
       <div class="section-label">Play Now</div>
       <div class="embed-frame">
         <div class="embed-inner">
+          <div class="play-overlay" id="playOverlay">
+            <div class="play-btn">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <polygon points="6,3 20,12 6,21"/>
+              </svg>
+            </div>
+          </div>
           <iframe
+            id="gameFrame"
             src="https://samuelbennett17-ux.github.io/hyperfighting/brgame.html"
             scrolling="no"
             allowfullscreen>
@@ -332,5 +387,31 @@
     © 2026 Your Name — Built with PICO-8
   </footer>
 
+  <script>
+    const overlay = document.getElementById('playOverlay');
+    const frame   = document.getElementById('gameFrame');
+
+    overlay.addEventListener('click', () => {
+      // Request fullscreen on the iframe (vendor-prefixed for Safari/older Chrome)
+      const el = frame;
+      if      (el.requestFullscreen)       el.requestFullscreen();
+      else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+
+      // Fade out overlay after a short delay so the game has time to load
+      overlay.classList.add('hidden');
+    });
+
+    // If user exits fullscreen manually, show overlay again
+    document.addEventListener('fullscreenchange', () => {
+      if (!document.fullscreenElement) {
+        overlay.classList.remove('hidden');
+      }
+    });
+    document.addEventListener('webkitfullscreenchange', () => {
+      if (!document.webkitFullscreenElement) {
+        overlay.classList.remove('hidden');
+      }
+    });
+  </script>
 </body>
 </html>
