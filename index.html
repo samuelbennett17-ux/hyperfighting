@@ -220,40 +220,24 @@
             box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
         }
 
-        .tap-capture {
+        .crt-overlay-hint {
             position: absolute;
-            inset: 0;
-            z-index: 5;
-            background: transparent;
-        }
-
-       .fullscreen-hint {
-            position: absolute;
-
-            /* default: desktop (bottom right) */
-            bottom: 8px;
-            right: 10px;
+            top: 6px;
+            left: 8px;
 
             font-size: 9px;
             letter-spacing: 0.12em;
             text-transform: uppercase;
 
-            padding: 4px 8px;
-            border: 1px solid var(--accent);
             color: var(--accent);
-
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(2px);
+            text-shadow: 0 0 6px rgba(247,127,193,0.8);
 
             pointer-events: none;
             z-index: 6;
 
             opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .fullscreen-hint.show {
-            opacity: 0.95;
+            transform: translateY(-2px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
         }
 
         /* scanlines */
@@ -488,12 +472,9 @@
         }
 
         @media (pointer: coarse) {
-            .fullscreen-hint {
-                top: 8px;
-                left: 10px;
-
-                bottom: auto;
-                right: auto;
+            .crt-overlay-hint.show {
+                opacity: 0.95;
+                transform: translateY(0);
             }
         }
     </style>
@@ -521,13 +502,12 @@
 
             <!-- LEFT: game -->
             <div>
+                <div class="crt-overlay-hint">
+                            tap here for fullscreen ↓
+                        </div>
                 <div class="crt-outer">
                     <div class="embed-frame">
-                        <div class="fullscreen-hint">
-                          Tap ⛶ for fullscreen
-                        </div>
                         <div class="embed-inner">
-                            <div class="tap-capture"></div>
                                 <iframe
                                   id="gameFrame"
                                   src="https://samuelbennett17-ux.github.io/hyperfighting/hyperfighting.html"
@@ -603,31 +583,6 @@
         </div>
         © 2026 Design by Sam Bennett — beatrush
     </footer>
-
-   <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const tapLayer = document.querySelector(".tap-capture");
-  const hint = document.querySelector(".fullscreen-hint");
-
-  if (!tapLayer || !hint) return;
-
-  let used = false;
-
-  tapLayer.addEventListener("pointerdown", () => {
-    if (used) return;
-    used = true;
-
-    hint.classList.add("show");
-
-    // remove the layer so the game becomes interactive
-    tapLayer.style.display = "none";
-
-    setTimeout(() => {
-      hint.classList.remove("show");
-    }, 3000);
-  });
-});
-</script>
 
 </body>
 
