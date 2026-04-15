@@ -224,35 +224,41 @@
             box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
         }
 
-        .fullscreen-hint {
+        .tap-capture {
             position: absolute;
-            bottom: 12px;
-            right: 12px;
+            inset: 0;
+            z-index: 5;
+            background: transparent;
+        }
 
-            font-size: 10px;
+       .fullscreen-hint {
+            position: absolute;
+
+            /* position over PICO-8 fullscreen button */
+            bottom: 8px;
+            right: 10px;
+
+            font-size: 9px;
             letter-spacing: 0.12em;
             text-transform: uppercase;
 
-            padding: 6px 10px;
+            padding: 4px 8px;
             border: 1px solid var(--accent);
             color: var(--accent);
 
-            background: rgba(0,0,0,0.6);
+            background: rgba(0,0,0,0.7);
             backdrop-filter: blur(2px);
 
             pointer-events: none;
-            z-index: 5;
+            z-index: 6;
 
-            opacity: 0.8;
-            animation: hint-fade 4s ease forwards;
+            opacity: 0;
+            transition: opacity 5s ease;
         }
 
-@keyframes hint-fade {
-    0%   { opacity: 0; transform: translateY(4px); }
-    10%  { opacity: 0.9; }
-    70%  { opacity: 0.9; }
-    100% { opacity: 0; transform: translateY(0); }
-}
+        .fullscreen-hint.show {
+            opacity: 0.95;
+        }
 
         /* scanlines */
         .embed-frame::before {
@@ -508,15 +514,16 @@
                 <div class="crt-outer">
                     <div class="embed-frame">
                         <div class="fullscreen-hint">
-                          ⛶ Tap for fullscreen
+                          Tap ⛶ for fullscreen
                         </div>
                         <div class="embed-inner">
-                            <iframe
-                                id="gameFrame"
-                                src="https://samuelbennett17-ux.github.io/hyperfighting/hyperfighting.html"
-                                scrolling="no"
-                                allowfullscreen>
-                            </iframe>
+                            <div class="tap-capture"></div>
+                                <iframe
+                                  id="gameFrame"
+                                  src="https://samuelbennett17-ux.github.io/hyperfighting/hyperfighting.html"
+                                  scrolling="no"
+                                  allowfullscreen>
+                                </iframe>
                         </div>
                     </div>
                     <div class="crt-bottom">
@@ -587,18 +594,27 @@
         © 2026 Design by Sam Bennett — beatrush
     </footer>
 
-    <script>
+   <script>
 document.addEventListener("DOMContentLoaded", () => {
-  const frame = document.getElementById("gameFrame");
+  const tapLayer = document.querySelector(".tap-capture");
+  const hint = document.querySelector(".fullscreen-hint");
 
-  if (!frame) return;
+  if (!tapLayer || !hint) return;
 
-  frame.addEventListener("click", () => {
-    if (frame.requestFullscreen) {
-      frame.requestFullscreen();
-    } else if (frame.webkitRequestFullscreen) {
-      frame.webkitRequestFullscreen();
-    }
+  let used = false;
+
+  tapLayer.addEventListener("pointerdown", () => {
+    if (used) return;
+    used = true;
+
+    hint.classList.add("show");
+
+    // remove the layer so the game becomes interactive
+    tapLayer.style.display = "none";
+
+    setTimeout(() => {
+      hint.classList.remove("show");
+    }, 3000);
   });
 });
 </script>
