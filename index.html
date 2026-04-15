@@ -3,30 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hyperfighting album out now</title>
+    <title>Hyperfighting — album out now</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
+        /* ── TOKENS ── */
         :root {
-            --bg: #0a0a0a;
+            --bg:      #0a0a0a;
             --surface: #111;
-            --border: #2a2a2a;
-            --accent: #ff8c3c;
-            --accent2: #ff8c3c;
-            --text: #f0f0e8;
-            --muted: #666;
-            --game-max: 720px;
+            --border:  #2a2a2a;
+            --accent:  #F77FC1;
+            --accent2: #FED442;
+            --text:    #f0f0e8;
+            --muted:   #666;
         }
 
-        * {
-            /* box-sizing: border-box;*/
-        }
+        * { box-sizing: border-box; }
 
-        html,
-        body {
+        html, body {
             margin: 0;
             padding: 0;
             overflow-x: hidden;
@@ -34,19 +32,53 @@
 
         body {
             font-family: 'DM Mono', monospace;
-            background: var(--bg) url('background.jpg') center center / cover fixed;
+            background: var(--bg) url('background.jpg') center top / cover fixed;
             color: var(--text);
             display: flex;
             flex-direction: column;
             min-height: 100dvh;
         }
 
+        a { color: #4CB5E5; }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+
+            background:
+                radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.7) 100%),
+                linear-gradient(to bottom, rgba(255,0,80,0.05), rgba(0,255,255,0.05));
+
+            animation: flicker 3s infinite;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0,0,0,0.00),
+                rgba(0,0,0,0.00) 2px,
+                rgba(0,0,0,0.35) 3px,
+                rgba(0,0,0,0.35) 4px
+            );
+        }
+
+        /* keep all content above page overlays */
+        header, .hero, main, footer { position: relative; z-index: 1; }
+
         /* ── HEADER ── */
         header {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            padding: 18px 36px;
+            align-items: center;
+            padding: 10px 36px;
             background: var(--surface);
             border-bottom: 1px solid var(--border);
             position: sticky;
@@ -54,56 +86,81 @@
             z-index: 10;
         }
 
-        .header-logo {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 28px;
-            letter-spacing: 0.08em;
-            color: var(--accent);
+        .br-logo {
+            display: flex;
+            align-items: center;
+            width: 200px;
         }
 
-        .header-tag {
-            font-size: 11px;
-            color: var(--muted);
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            border: 1px solid var(--border);
-            padding: 4px 10px;
-            border-radius: 2px;
+        .br-logo img {
+            width: 100%;
+            height: auto;
+            display: block;
         }
 
         /* ── HERO ── */
         .hero {
-            padding: 30px 24px 15px;
             text-align: center;
+            padding: 20px 24px;
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
-        .hero h1 {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(52px, 10vw, 100px);
-            letter-spacing: 0.04em;
-            margin: 0 0 12px;
-            line-height: 1;
-        }
         .hero h2 {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(26px, 5vw, 50px);
+            font-size: clamp(22px, 5vw, 40px);
             letter-spacing: 0.04em;
-            margin: 0 0 12px;
-            line-height: 1;
-        }
-
-        .hero h1 span,
-        h2 span {
-            color: var(--accent);
-        }
-
-        .highlight {
-            color: var(--accent2);
-            text-transform: uppercase;
             margin: 0;
         }
 
-        /* ── MAIN ── */
+        .hero h2 span { color: var(--accent); }
+
+        /* logo with RGB chromatic aberration effect */
+        .hero-logo {
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero-logo img {
+            display: block;
+            margin: 0 auto 24px;
+            width: 100%;
+            max-width: 520px;
+            filter:
+                drop-shadow(0 0 8px rgba(247,127,193,0.7))
+                drop-shadow(0 0 24px rgba(247,127,193,0.4));
+            animation: flicker 3s infinite;
+        }
+
+        .hero-logo::before,
+        .hero-logo::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: url('header-logo.png') center / contain no-repeat;
+            opacity: 0.25;
+            pointer-events: none;
+        }
+
+        .hero-logo::before {
+            transform: translate(-2px, 0);
+            filter: hue-rotate(-20deg) saturate(4);
+            mix-blend-mode: screen;
+        }
+
+        .hero-logo::after {
+            transform: translate(2px, 0);
+            filter: hue-rotate(200deg) saturate(4);
+            mix-blend-mode: screen;
+        }
+
+        @keyframes flicker {
+            0%, 4%, 10%, 100% { opacity: 1; }
+            2%                 { opacity: 0.92; }
+            8%                 { opacity: 0.95; }
+        }
+
+        /* ── MAIN LAYOUT ── */
         main {
             flex: 1;
             display: flex;
@@ -114,7 +171,6 @@
             width: 100%;
         }
 
-        /* ── SPLIT ── */
         .split {
             display: grid;
             grid-template-columns: 7fr 3fr;
@@ -124,9 +180,7 @@
         }
 
         @media (max-width: 700px) {
-            .split {
-                grid-template-columns: 1fr;
-            }
+            .split { grid-template-columns: 1fr; }
         }
 
         /* ── SECTION LABEL ── */
@@ -148,93 +202,157 @@
             background: var(--border);
         }
 
-        /* ── THUMBNAIL ── */
-        .game-thumb-link {
-            display: block;
+        /* ── CRT BEZEL ── */
+        .crt-outer {
+            background: #1a1a1a;
+            border-radius: 18px;
+            padding: 28px 24px;
+            border: 2px solid #2e2e2e;
+            box-shadow:
+                inset 0 2px 4px rgba(255,255,255,0.04),
+                inset 0 -2px 4px rgba(0,0,0,0.6);
+        }
+
+        .embed-frame {
             position: relative;
-            border: 1px solid var(--border);
+            border-radius: 10px;
             overflow: hidden;
             background: #000;
-            text-decoration: none;
+            border: 2px solid #111;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
         }
 
-        .game-thumb-link img {
-            display: block;
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            object-fit: cover;
-            transition: transform 0.3s ease, filter 0.3s ease;
-        }
-
-        .game-thumb-link:hover img {
-            transform: scale(1.03);
-            filter: brightness(0.6);
-        }
-
-        .thumb-hover {
+        /* scanlines */
+        .embed-frame::before {
+            content: '';
             position: absolute;
             inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.2s ease;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0,0,0,0.00),
+                rgba(0,0,0,0.00) 2px,
+                rgba(0,0,0,0.35) 3px,
+                rgba(0,0,0,0.35) 4px
+            );
             pointer-events: none;
+            z-index: 2;
         }
 
-        .game-thumb-link:hover .thumb-hover {
-            opacity: 1;
+        /* vignette */
+        .embed-frame::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.55) 100%);
+            pointer-events: none;
+            z-index: 3;
+            border-radius: 10px;
         }
 
-        .game-footer {
-          background-color: #0a0a0a;
-          padding: 10px;
-          text-align: center;
-          text-transform: uppercase;
+        .embed-inner {
+            position: relative;
+            width: 100%;
+            padding-top: 80%;
+            overflow: hidden;
         }
 
-        .thumb-play-btn {
-            width: 72px;
-            height: 72px;
-            border-radius: 50%;
-            border: 2px solid var(--accent);
+        .embed-inner iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 106%;
+            border: none;
+            display: block;
+        }
+
+        .crt-bottom {
             display: flex;
             align-items: center;
-            justify-content: center;
-        }
-
-        .thumb-play-btn svg {
-            width: 28px;
-            height: 28px;
-            fill: var(--accent);
-            margin-left: 4px;
-        }
-
-        .thumb-label {
-            display: flex;
             justify-content: space-between;
-            align-items: center;
-            padding: 10px 14px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-top: none;
-            font-size: 11px;
-            color: var(--muted);
-            letter-spacing: 0.08em;
+            padding: 10px 4px 0;
         }
 
-        .thumb-label a {
-            color: var(--accent);
-            text-decoration: none;
+        .crt-brand {
+            font-family: 'DM Mono', monospace;
             font-size: 10px;
+            letter-spacing: 0.25em;
+            color: #444;
             text-transform: uppercase;
         }
 
-        .thumb-label a:hover {
-            text-decoration: underline;
+        .crt-controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
         }
 
-        /* ── ABOUT ── */
+        .crt-btn {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #2a2a2a;
+            border: 1px solid #3a3a3a;
+        }
+
+        .crt-btn.pwr {
+            width: 12px;
+            height: 12px;
+            background: #1a2a1a;
+            border-color: #2a3a2a;
+            box-shadow: 0 0 4px rgba(100,200,100,0.3);
+        }
+
+        .crt-vent {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .crt-vent span {
+            display: block;
+            width: 24px;
+            height: 1px;
+            background: #333;
+        }
+
+        /* ── GAME FOOTER ── */
+        .game-footer {
+            font-size: 18px;
+            background-color: var(--bg);
+            padding: 5px 10px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .highlight { color: var(--accent); }
+
+        .tapes {
+            display: block;
+            margin: 0 auto 5px;
+        }
+
+        .footer-btn {
+            display: inline-block;
+            margin: 12px 0;
+            padding: 10px 24px;
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            font-family: 'DM Mono', monospace;
+            font-size: 15px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .footer-btn:hover {
+            background: var(--accent2);
+            color: var(--bg);
+        }
+
+        /* ── ABOUT CARD ── */
         .about-card {
             border: 1px solid var(--border);
             padding: 28px 32px;
@@ -242,13 +360,6 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
-        }
-
-        .about-card img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin-top: 8px;
         }
 
         .about-card h2 {
@@ -265,148 +376,11 @@
             margin: 0;
         }
 
-        .crt-outer {
-          background: #1a1a1a;
-          border-radius: 18px;
-          padding: 18px 8px 14px 14px;
-          border: 2px solid #2e2e2e;
-          box-shadow: inset 0 2px 4px rgba(255,255,255,0.04),
-                      inset 0 -2px 4px rgba(0,0,0,0.6);
-          position: relative;
-      }
-
-      .embed-frame {
-          position: relative;
-          border-radius: 10px;
-          overflow: hidden;
-          background: #000;
-          border: 2px solid #111;
-          box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
-          max-width: 100%;
-      }
-
-    /* scanlines */
-    .embed-frame::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: repeating-linear-gradient(
-            0deg,
-            transparent,
-            transparent 3px,
-            rgba(0,0,0,0.12) 3px,
-            rgba(0,0,0,0.12) 4px
-        );
-        pointer-events: none;
-        z-index: 2;
-    }
-
-    /* vignette */
-    .embed-frame::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.55) 100%);
-        pointer-events: none;
-        z-index: 3;
-        border-radius: 10px;
-    }
-
-    .crt-bottom {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 10px 4px 0;
-    }
-
-    .crt-brand {
-        font-family: 'DM Mono', monospace;
-        font-size: 10px;
-        letter-spacing: 0.25em;
-        color: #444;
-        text-transform: uppercase;
-    }
-
-    .crt-controls {
-        display: flex;
-        gap: 8px;
-        align-items: center;
-    }
-
-    .crt-btn {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: #2a2a2a;
-        border: 1px solid #3a3a3a;
-    }
-
-    .crt-btn.pwr {
-        width: 12px;
-        height: 12px;
-        background: #1a2a1a;
-        border-color: #2a3a2a;
-        box-shadow: 0 0 4px rgba(100,200,100,0.3);
-    }
-
-    .crt-vent {
-        display: flex;
-        flex-direction: column;
-        gap: 3px;
-    }
-
-    .crt-vent span {
-        display: block;
-        width: 24px;
-        height: 1px;
-        background: #333;
-    }
-
-            .embed-inner {
-        position: relative;
-        width: 100%;
-        padding-top: 100%; /* was 100% — wider ratio fits PICO-8's control panel */
-        overflow: hidden;
-    }
-
-        .embed-inner iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-
-            width: 100%;
-            height: 100%;
-
-            border: none;
+        .about-card img {
+            max-width: 100%;
+            height: auto;
             display: block;
-            overflow: hidden;
-        }
-
-          .footer-btn {
-              display: inline-block;
-              margin-top: 12px;
-              margin-bottom: 12px;
-              padding: 10px 24px;
-              background: transparent;
-              border: 1px solid var(--accent2);
-              color: var(--accent);
-              font-family: 'DM Mono', monospace;
-              font-size: 15px;
-              letter-spacing: 0.15em;
-              text-transform: uppercase;
-              text-decoration: none;
-              transition: background 0.2s ease, color 0.2s ease;
-          }
-
-          .footer-btn:hover {
-              background: var(--accent);
-              color: #000;
-          }
-
-        .tapes {
-          align-content: center;
-
-          padding-bottom: 5px;
+            margin-top: 8px;
         }
 
         .stat-list {
@@ -429,104 +403,116 @@
             color: var(--muted);
         }
 
-        .stat-list li span {
-            color: var(--accent);
-        }
-
+        .stat-list li span { color: var(--accent); }
 
         /* ── FOOTER ── */
         footer {
             background: var(--surface);
             border-top: 1px solid var(--border);
             text-align: center;
-            padding: 18px;
+            padding: 20px 0 10px;
             font-size: 11px;
             color: var(--muted);
             letter-spacing: 0.1em;
             text-transform: uppercase;
         }
+
+        .socials {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            padding-bottom: 20px;
+        }
+
+        .socials a {
+            color: #fff;
+            font-size: 24px;
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .socials a:hover { opacity: 0.6; }
     </style>
 </head>
 
 <body>
+
     <header>
-        <div class="header-logo">beatrush</div>
-        <div class="header-tag">PICO-8 Edition</div>
+        <div class="br-logo"><img src="br-logo.png" alt="beatrush"></div>
+        <div class="header-tag"><img src="game-sprite.png" alt=""></div>
     </header>
 
     <div class="hero">
-        <h1>HYPER<span>FIGHTING</span></h1>
-        <h2>new album from <span>beatrush</span>, <a href="https://beatrush.bandcamp.com/album/hyperfighting">listen now</a></h2>
+        <div class="hero-logo">
+            <img src="header-logo.png" alt="HYPERFIGHTING">
+        </div>
+        <h2>
+            new album from <span>beatrush</span>,
+            <a href="https://beatrush.bandcamp.com/album/hyperfighting">listen now</a>
+        </h2>
     </div>
 
     <main>
         <div class="split">
 
-           <!-- LEFT -->
-    <div>
+            <!-- LEFT: game -->
+            <div>
+                <div class="crt-outer">
+                    <div class="embed-frame">
+                        <div class="embed-inner">
+                            <iframe
+                                id="gameFrame"
+                                src="https://samuelbennett17-ux.github.io/hyperfighting/hyperfighting.html"
+                                scrolling="no"
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+                    <div class="crt-bottom">
+                        <div class="crt-brand">RGBeatrush</div>
+                        <div class="crt-vent">
+                            <span></span><span></span><span></span><span></span>
+                        </div>
+                        <div class="crt-controls">
+                            <div class="crt-btn"></div>
+                            <div class="crt-btn"></div>
+                            <div class="crt-btn pwr"></div>
+                        </div>
+                    </div>
+                </div>
 
-
-        <div class="crt-outer">
-          <div class="embed-frame">
-            <div class="embed-inner">
-              <iframe
-                id="gameFrame"
-                src="https://samuelbennett17-ux.github.io/hyperfighting/hyperfighting.html"
-                scrolling="no"
-                allowfullscreen>
-              </iframe>
+                <div class="game-footer">
+                    <p>Finish <span class="highlight">level 10</span> and collect all
+                    <span class="highlight">beat tapes</span> to generate a code for
+                    <span class="highlight">50% off</span>
+                    <span class="highlight">Hyperfighting</span>.</p>
+                    <img class="tapes" src="tapes.png" alt="Beat tapes">
+                    <a class="footer-btn" href="https://beatrush.bandcamp.com/album/hyperfighting" target="_blank" rel="noopener">
+                        Listen to Hyperfighting now on Bandcamp
+                    </a>
+                </div>
             </div>
-          </div>
-          <div class="crt-bottom">
-            <div class="crt-brand">RGBeatrush</div>
-            <div class="crt-vent">
-              <span></span><span></span><span></span><span></span>
-            </div>
-            <div class="crt-controls">
-              <div class="crt-btn"></div>
-              <div class="crt-btn"></div>
-              <div class="crt-btn pwr"></div>
-            </div>
-          </div>
-        </div>
 
-        <div class="game-footer">
-          <div>
-            <p>Finish <span class="highlight">level 10</span> and collect all 
-            <span class="highlight">beat tapes</span> to generate a code for 
-            <span class="highlight">50% off</span> 
-            <span class="highlight">Hyperfighting</span>.</p>
-          </div>
-          <div><img class="tapes" src="tapes.png"></div>
-          <a class="footer-btn" href="https://your-link-here.com" target="_blank" rel="noopener">
-            Listen to Hyperfighting now on Bandcamp
-          </a>
-        </div>
-      </div>
-
-            <!-- RIGHT -->
-            <section class="about-section">
-
+            <!-- RIGHT: about -->
+            <section>
                 <div class="about-card">
                     <h2>
-                        <span>Hyperfighting</span>: the album:
+                        <span class="highlight">Hyperfighting</span>: the album:
                         <span>the video game</span>
                     </h2>
-
                     <p>
-                        Boom Bap Billy has GAS (Gear Acquisition Syndrome). Help him track down the only known cure — more gear — and rise to become the Beatmaster. Watch out for the legally distinct duo who believe GAS should be treated… permanently.
+                        Boom Bap Billy has GAS (Gear Acquisition Syndrome). Help him track down the only known cure, new gear. Watch out for the legally distinct duo who believe GAS should be treated… permanently.
                     </p>
-
                     <p>
                         Along the way, collect the Beat Tapes hidden across the city by beatrush, who stashed them to avoid releasing his music.
                     </p>
-
                     <p>
-                            Finish level 10 and collect all 5 Beat Tapes to unlock a 50% discount code for beatrush’s new album: <a href="https://beatrush.bandcamp.com/album/hyperfighting">Hyperfighting.</a>
-                            <a href="https://beatrush.bandcamp.com/album/hyperfighting"><img src="cover-art.jpg"></a>
-
+                        Finish level 10 and collect all 5 Beat Tapes to unlock a 50% discount code for beatrush's new album:
+                        <a href="https://beatrush.bandcamp.com/album/hyperfighting">Hyperfighting.</a>
+                        <a href="https://beatrush.bandcamp.com/album/hyperfighting">
+                            <img src="cover-art.jpg" alt="Hyperfighting album cover">
+                        </a>
                     </p>
-
                     <ul class="stat-list">
                         <li>Developer <span>beatrush game studios</span></li>
                         <li>Release Date <span>2026</span></li>
@@ -540,9 +526,13 @@
     </main>
 
     <footer>
+        <div class="socials">
+            <a href="https://instagram.com/beatrush_" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://youtube.com/beatrushmusic" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="https://beatrush.bandcamp.com/album/hyperfighting" aria-label="Bandcamp"><i class="fa-brands fa-bandcamp"></i></a>
+        </div>
         © 2026 Sam Bennett — beatrush
     </footer>
-
 
 </body>
 </html>
