@@ -92,6 +92,10 @@
             width: 200px;
         }
 
+        .header-tag img {
+            margin: -15px;
+        }
+
         .br-logo img,
         .header-tag img {
             width: 100%;
@@ -103,7 +107,7 @@
         /* ── HERO ── */
         .hero {
             text-align: center;
-            padding: 20px 24px;
+            padding: 8px 24px;
             max-width: 1000px;
             margin: 0 auto;
         }
@@ -224,21 +228,27 @@
             position: absolute;
             top: 32px;
             left: 74px;
+            z-index: 50;
 
             font-size: 9px;
             letter-spacing: 0.14em;
             text-transform: uppercase;
 
-            color: rgba(255, 255, 255, 0.18);
+            /* base color = barely visible */
+            color: rgba(255, 255, 255, 0.20);
+
+            /* ✨ engraved effect */
             text-shadow:
-                0 1px 0 rgba(0,0,0,0.6),
-                0 -1px 0 rgba(255,255,255,0.05);
+                0 1px 0 rgba(0,0,0,0.9),        /* deep inner shadow (cut) */
+                0 -1px 0 rgba(255,255,255,0.06); /* subtle top highlight */
 
-                pointer-events: none;
-                z-index: 20;
+            /* soften edges slightly */
+            filter: blur(0.2px);
 
-                opacity: 0;
-                transform: translateY(-2px);
+            pointer-events: none;
+
+            opacity: 0;
+            transform: translateY(-1px);
         }
 
         /* scanlines */
@@ -289,12 +299,12 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 4px 0;
+            padding: 14px 4px 0;
         }
 
         .crt-brand {
             font-family: 'DM Mono', monospace;
-            font-size: 10px;
+            font-size: 12px;
             letter-spacing: 0.25em;
             color: #444;
             text-transform: uppercase;
@@ -332,7 +342,7 @@
         .crt-btn.pwr {
             width: 12px;
             height: 12px;
-            background: #1a2a1a;
+            background: #ff4040;
             border-color: #2a3a2a;
             box-shadow: 0 0 4px rgba(100,200,100,0.3);
         }
@@ -472,11 +482,13 @@
             .split { grid-template-columns: 1fr; }
         }
 
-        @media (max-width: 1080px) and (hover: none) and (pointer: coarse) {
+        @media (max-width: 700px) and (hover: none) {
             .crt-etch {
                 opacity: 1;
+                transform: translateY(0);
             }
         }
+        
     </style>
 </head>
 
@@ -492,7 +504,7 @@
             <img src="header-logo.png" alt="HYPERFIGHTING">
         </div>
         <h2>
-            new album from <span>beatrush</span>,
+            album from <span>beatrush</span>,
             <a href="https://beatrush.bandcamp.com/album/hyperfighting">listen now</a>
         </h2>
     </div>
@@ -560,7 +572,7 @@
                         Finish level 10 and collect all 5 Beat Tapes to unlock a 50% discount code for beatrush's new album:
                         <a href="https://beatrush.bandcamp.com/album/hyperfighting">Hyperfighting</a>.
                         <a href="https://beatrush.bandcamp.com/album/hyperfighting">
-                            <img src="cover-art.jpg" alt="Hyperfighting album cover">
+                            <img src="cover-art.gif" alt="Hyperfighting album cover">
                         </a>
                     </p>
                     <ul class="stat-list">
