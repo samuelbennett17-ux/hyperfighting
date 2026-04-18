@@ -234,6 +234,17 @@
             letter-spacing: 0.14em;
             text-transform: uppercase;
 
+            /* base color = barely visible */
+            color: rgba(255, 255, 255, 0.20);
+
+            /* ✨ engraved effect */
+            text-shadow:
+                0 1px 0 rgba(0,0,0,0.9),        /* deep inner shadow (cut) */
+                0 -1px 0 rgba(255,255,255,0.06); /* subtle top highlight */
+
+            /* soften edges slightly */
+            filter: blur(0.2px);
+
             pointer-events: none;
 
             opacity: 0;
@@ -471,7 +482,7 @@
             .split { grid-template-columns: 1fr; }
         }
 
-        @media (max-width: 700px) and (hover: none) {
+        @media (max-width: 900px){
             .crt-etch {
                 opacity: 1;
                 transform: translateY(0);
@@ -511,7 +522,7 @@
                         <div class="embed-inner">
                             <iframe
                               id="gameFrame"
-                              src="hyperfighting.html"
+                              src="https://beatrushmusic.github.io/hyperfighting/hyperfighting.html"
                               scrolling="no"
                               allowfullscreen>
                             </iframe>
